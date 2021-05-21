@@ -1,0 +1,2 @@
+# MethodForOptimizingplacementReplicas
+Дипломная работа
