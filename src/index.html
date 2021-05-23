@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>MethodForOptimizingPlacementReplicasApp</title>
+    <link rel="stylesheet" type="text/css" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./styles/styles.css">
+    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <div class = "col-md-4">
+          <label>Количество узлов: </label>
+          <input type="number" value="nodesNumbers">
+          <button>Создать граф</button>
+        </div>
+        <!--Вьюшка графа-->
+        <div class="col-md-8">
+
+          <h2>Граф РСОД</h2>
+          <div id="network"></div>
+        </div>
+      </div>
+    </div>
+    <script src="./scripts/calc.js"></script>
+    <script src="./scripts/graphHandler.js">drawGraph()</script>
+  </body>
+
+</html>
