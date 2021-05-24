@@ -30,6 +30,11 @@ table table td {
   vertical-align: middle;
 }
 
+input[type="number"]
+{
+  width: 70px;
+}
+
 input[type="text"],
 pre {
   border: 1px solid lightgray;
@@ -46,3 +51,41 @@ pre {
   height: 400px;
   border: 1px solid lightgray;
 }
+
+
+#editGraph:hover
+{
+    cursor: pointer;
+    opacity: 0.5;
+}
+
+.editGraphModalWindow
+{
+  display: none;
+}
+
+
+
+  .table {
+    width: 40%;
+    margin-bottom: 20px;
+    border: 1px solid #dddddd;
+    border-collapse: collapse; 
+  }
+  .table th {
+    font-weight: bold;
+    padding: 5px;
+    background: #efefef;
+    border: 1px solid #dddddd;
+  }
+  .table td {
+    border: 1px solid #dddddd;
+    text-align: center;
+    padding: 5px;
+    width: 10;
+  }
+  .table input
+  {
+    border: white;
+    text-align: center;
+  }

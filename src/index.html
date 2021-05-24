@@ -10,21 +10,110 @@
   <body>
     <div class="container-fluid">
       <div class="row">
-        <div class = "col-md-4">
+        <div class = "col-md-4 mt-2">
           <label>Количество узлов: </label>
-          <input type="number" value="nodesNumbers">
-          <button>Создать граф</button>
-        </div>
+          <input type="number" value="countNodes" id="countNodes">
+          <button onclick="drawNodes();">Создать граф</button>
+          <div class="row mt-4">
+            <div class="col-md-12 ">
+              <label>Стоимость передачи единицы данных, s:</label>
+              <input type="number" value="transferCost" id="transferCost">
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-md-12">
+              <label>Средний объем данных, d<sub>e</sub>:</label>
+              <input type="number" value="de" id="de">
+            </div>
+          </div>
+          <div class="row  mt-2">
+            <div class="col-md-12">
+              <label>Средний объем данных, d<sub>u</sub>:</label>
+              <input type="number" value="du" id="du">
+            </div>
+            <div class="row mt-2">
+              <div class="nodeParameters"> </div>
+            </div>
+          </div>
+          <!--Вспылающая формаа-->
+          <div class="editGraphModalWindow">
+              <div class="row mt-2" id="editEdges">
+                <h5>Рёбра</h5>
+                <div class="row mt-1">
+                    <div class="col-md-3">
+                      <label>Id:</label>
+                    </div>
+                    <div class="col-md-6">
+                      <input type="number" id="edgeId">
+                    </div>
+                </div>
+    
+                <div class="row mt-1">
+                  <div class="col-md-3">
+                    <label>Расстояние:</label>
+                  </div>
+                  <div class="col-md-6">
+                    <input type="number" id="edgeCost">
+                  </div>
+                </div>
+    
+                <div class="row mt-1">
+                  <div class="col-md-3">
+                    <label>Откуда:</label>
+                  </div>
+                  <div class="col-md-6">
+                    <input type="number" id="edgeFrom">
+                  </div>
+                </div>
+    
+                <div class="row mt-1">
+                  <div class="col-md-3">
+                    <label>Куда:</label>
+                  </div>
+                  <div class="col-md-6">
+                    <input type="number" id="edgeTo">
+                  </div>
+                </div>
+    
+                <div class="row mt-1">
+                  <div class="col-md-2">
+                    <button onclick="addEdge();">Добавить</button>
+                  </div>
+                  <div class="col-md-2">
+                    <button onclick= "removeEdge();">Удалить</button>
+                  </div>
+                  <div class="col-md-2">
+                    <button onclick= "updateEdge();">Изменить</button>
+                  </div>
+                </div>
+    
+                
+              </div>
+            </div>
+          </div>
         <!--Вьюшка графа-->
         <div class="col-md-8">
-
-          <h2>Граф РСОД</h2>
-          <div id="network"></div>
+          <div class="row">
+            <div class="col-md-11">
+              <h2 style="font-size: medium;">Граф РСОД</h2>
+            </div>
+            <div class="col-md-1">
+              <img src="./resources/settings.svg" alt="editGraph" width="35" height="35" id="editGraph" onclick="editGraphModalWindowHandler();">
+            </div>
+            <div class="row mt-1">
+              <div id="network"></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <script src="./scripts/calc.js"></script>
-    <script src="./scripts/graphHandler.js">drawGraph()</script>
+    <script src="./scripts/graphHandler.js">
+        network.on("selectNode",(params)=>
+          {
+          console.log("fsdfds");
+          });
+    </script>
+    <script src="./scripts/editGraphModalWindowHandler.js"></script>
   </body>
 
 </html>
