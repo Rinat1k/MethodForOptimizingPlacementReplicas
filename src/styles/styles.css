@@ -59,33 +59,32 @@ pre {
     opacity: 0.5;
 }
 
-.editGraphModalWindow
-{
-  display: none;
+
+.table {
+  width: 40%;
+  margin-bottom: 20px;
+  border: 1px solid #dddddd;
+  border-collapse: collapse; 
 }
-
-
-
-  .table {
-    width: 40%;
-    margin-bottom: 20px;
-    border: 1px solid #dddddd;
-    border-collapse: collapse; 
-  }
-  .table th {
-    font-weight: bold;
-    padding: 5px;
-    background: #efefef;
-    border: 1px solid #dddddd;
-  }
-  .table td {
-    border: 1px solid #dddddd;
-    text-align: center;
-    padding: 5px;
-    width: 10;
-  }
-  .table input
-  {
-    border: white;
-    text-align: center;
-  }
+.table th {
+  font-weight: bold;
+  padding: 5px;
+  background: #efefef;
+  border: 1px solid #dddddd;
+}
+.table td {
+  border: 1px solid #dddddd;
+  text-align: center;
+  padding: 5px;
+  width: 10;
+}
+.table input
+{
+  border: white;
+  text-align: center;
+}
+input:disabled
+{
+  background-color:white;
+  color: black;
+}
