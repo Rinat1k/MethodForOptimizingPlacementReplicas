@@ -9,164 +9,237 @@
   </head>
   <body>
     <div class="container-fluid">
-      <div class="row">
-        <div class = "col-md-4 mt-2">
-          <label>Количество узлов: </label>
-          <input type="number" id="countNodes" oninput="validateDrawNodesInput();">
-          <button onclick="drawNodes();" id="createGraphBtn" disabled>Создать граф</button>
-          <div class="row mt-4">
-            <div class="col-md-12 ">
-              <label>Стоимость передачи единицы данных, s:</label>
+      <div class="row"> 
+        <div class="col-md-4 mt-2">
+          <div class="row">
+            <div class="col-md-6">
+              <label>Количество узлов, p: </label>  
+            </div>
+            <div class="col-md-2">
+              <input type="number" id="countNodes" oninput="validateDrawNodesInput();">  
+            </div>
+            <div class="col-md-4">
+              <button onclick="drawNodes();" id="createGraphBtn" disabled>Создать граф</button>
+            </div>
+          </div>
+
+          <div class="row  mt-1">
+            <div class="col-md-6">
+              <label>Стоимость передачи, s:</label>
+            </div>
+            <div class="col-md-4">
               <input type="number" id="transferCost">
             </div>
           </div>
-          <div class="row mt-2">
-            <div class="col-md-12">
+
+          <div class="row  mt-1">
+            <div class="col-md-6">
               <label>Средний объем данных, d<sub>e</sub>:</label>
+            </div>
+            <div class="col-md-4">
               <input type="number" id="deInput" onchange="updateVnInNodes();">
             </div>
           </div>
-          <div class="row  mt-2">
-            <div class="col-md-12">
-              <label>Средний объем данных, d<sub>u</sub>:</label>
-              <input type="number" id="duInput" onchange="updateVnInNodes();"> 
+
+          <div class="row  mt-1">
+            <div class="col-md-6"><label>Средний объем данных, d<sub>u</sub>:</label></div>
+            <div class="col-md-4"><input type="number" id="duInput" onchange="updateVnInNodes();"> </div>
+          </div>
+
+          <div class="row mt-1">
+            <div class="col-md-6">
+              <label>Количество нужных узлов, p:</label>
             </div>
-            <div class="row  mt-2">
-              <div class="col-md-12">
-                <label>Количество нужных узлов, p</label>
-                <input type="number" id="pInput" onchange="updateVnInNodes();">
-              </div>
+            <div class="col-md-2">
+              <input type="number" id="pInput" onchange="updateVnInNodes();">
             </div>
-            <div class="row mt-2">
-              <!--Таблица критериев-->
-              <div class="nodeParameters"> 
-                 <table class="table" id="nodeParameters">
-                   <tbody> 
-                   <tr>
-                       <td>Критерий</td>
-                       <td>Значение</td>
-                   </tr>
-                   <tr>
-                       <td>Id</td>
-                       <td><input type="number" id='inputId' class="criterialTable" disabled></td>
-                   </tr>
-                   <tr>
-                       <td>λ<sup>e</sup><sub>n</sub></td>
-                       <td><input type="number" id='inputLambdaE' class="criterialTable" onchange="updateNode();"></td>
-                   </tr>
-                   <tr>
-                       <td>λ<sup>u</sup><sub>n</sub></td>
-                       <td><input type="number" id='inputLambdaU' class="criterialTable" onchange="updateNode()"></td>
-                   </tr>
-                   <tr>
-                       <td>cost_S</td>
-                       <td><input type="number" id='inputCostS' class="criterialTable" onchange="updateNode()"></td>
-                  </tr>
-                  <tr>
-                      <td>cost_E</td>
-                      <td><input type="number" id='inputCostE' class="criterialTable" onchange="updateNode()"></td>
-                  </tr>
-                  <tr>
-                      <td>cost_U</td>
-                      <td><input type="number" id='inputCostU' class="criterialTable" onchange="updateNode()"></td>
-                  </tr>
-                  <tr>
-                      <td>v<sub>n</sub></td>
-                       <td><input type="number" id="inputVn" disabled></td>
-                  </tr>
-                  </tbody>
-                  </table>
-              </div>
+            <div class="col-md-1">
+              <button id="calculate" onclick="getOptimalNodes()">Рассчитать</button>
             </div>
           </div>
-          <!--Вспылающая формаа-->
-          <div class="editGraphModalWindow" style="display: none;">
-              <div class="row mt-2" id="editEdges">
-                <h5>Ребро</h5>
-                <div class="row mt-1">
-                    <div class="col-md-3">
-                      <label>Id:</label>
-                    </div>
-                    <div class="col-md-6">
-                      <input type="number" id="edgeId" class="editEdgesField" oninput="validateEditEdgeModalWindow()">
-                    </div>
-                </div>
-    
-                <div class="row mt-1">
-                  <div class="col-md-3">
-                    <label>Расстояние:</label>
-                  </div>
-                  <div class="col-md-6">
-                    <input type="number" id="edgeCost" class="editEdgesField" oninput="validateEditEdgeModalWindow()">
-                  </div>
-                </div>
-    
-                <div class="row mt-1">
-                  <div class="col-md-3">
-                    <label>Откуда:</label>
-                  </div>
-                  <div class="col-md-6">
-                    <input type="number" id="edgeFrom" class="editEdgesField" oninput="validateEditEdgeModalWindow()">
-                  </div>
-                </div>
-    
-                <div class="row mt-1">
-                  <div class="col-md-3">
-                    <label>Куда:</label>
-                  </div>
-                  <div class="col-md-6">
-                    <input type="number" id="edgeTo" class="editEdgesField" oninput="validateEditEdgeModalWindow()">
-                  </div>
-                </div>
-    
-                <div class="row mt-1">
-                  <div class="col-md-2">
-                    <button onclick="addEdge();" id="addEdgeBtn" disabled>Добавить</button>
-                  </div>
-                  <div class="col-md-2">
-                    <button onclick= "removeEdge();" id="removeEdgeBtn" disabled>Удалить</button>
-                  </div>
-                  <div class="col-md-2">
-                    <button onclick= "updateEdge();" id="updateEdgeBtn" disabled>Изменить</button>
-                  </div>
-                </div>
-                <h5>Узел</h5>
-                <div class="row mt">
-                  <div class="col-md-3">
-                    <label>Id:</label>
-                  </div>
-                  <div class="col-md-6">
-                    <input type="number" id="nodeId" class="editNodesField" oninput="validateEditNodeModalWindow()">
-                  </div>
-                  <div class="row mt-1">
-                    <div class="col-md-2">
-                      <button onclick="addNode();" id="addNodeBtn" disabled>Добавить</button>
-                    </div>
-                    <div class="col-md-2">
-                      <button onclick= "removeNode();" id="removeNodeBtn" disabled>Удалить</button>
-                    </div>
-                  </div>
-              </div>
-              </div>
+
+          <div class="row mt-1">
+            <div class="col md-6">
+              <label>Количество файлов:</label>
+            </div>
+            <div class="col md-6">
+              <input type="number" id="fileNumbersInput" onchange="">
             </div>
           </div>
-        <!--Вьюшка графа-->
-        <div class="col-md-8">
+
+          <div class="row mt-1">
+            <div class="nodeParameters"> 
+              <table class="table" id="nodeParameters" style="pointer-events: none;">
+                <tbody> 
+                <tr>
+                    <td>Критерий</td>
+                    <td>Значение</td>
+                </tr>
+                <tr>
+                    <td>Id</td>
+                    <td><input type="number" id='inputId' class="criterialTable" disabled></td>
+                </tr>
+                <tr>
+                    <td>λ<sup>e</sup><sub>n</sub></td>
+                    <td><input type="number" id='inputLambdaE' class="criterialTable" onchange="updateNode();"></td>
+                </tr>
+                <tr>
+                    <td>λ<sup>u</sup><sub>n</sub></td>
+                    <td><input type="number" id='inputLambdaU' class="criterialTable" onchange="updateNode()"></td>
+                </tr>
+                <tr>
+                    <td>cost_S</td>
+                    <td><input type="number" id='inputCostS' class="criterialTable" onchange="updateNode()"></td>
+               </tr>
+               <tr>
+                   <td>cost_E</td>
+                   <td><input type="number" id='inputCostE' class="criterialTable" onchange="updateNode()"></td>
+               </tr>
+               <tr>
+                   <td>cost_U</td>
+                   <td><input type="number" id='inputCostU' class="criterialTable" onchange="updateNode()"></td>
+               </tr>
+               <tr>
+                   <td>v<sub>n</sub></td>
+                    <td><input type="number" id="inputVn" disabled></td>
+               </tr>
+               </tbody>
+               </table>
+           </div>
+          </div>
+        </div>
+        <div class="col-md-8 ml-1">
           <div class="row">
-            <div class="col-md-11">
+            <div class="col-md-10">
               <h2 style="font-size: medium;">Граф РСОД</h2>
             </div>
             <div class="col-md-1">
               <img src="./resources/settings.svg" alt="editGraph" width="35" height="35" id="editGraph" onclick="editGraphModalWindowHandler()">
             </div>
-            <div class="row mt-1">
+          </div>
+          <div class="row">
+            <div class="col-md-11">
               <div id="network"></div>
+            </div>
+          </div>
+          <div class="row mt-2">
+              <div class="resultTable">
+                <table>
+                  <tr>
+                      <td rowspan="2">X<sub>p</sub></td>
+                      <td rowspan="2">F(X<sub>p</sub>)</td>
+                      <td rowspan="2">σ(X<sub>p</sub>)</td>
+                      <td colspan="3">Стоимости</td>
+                  </tr>
+                  <tr>
+                      <td>Cost_S(X<sub>p</sub>)</td>
+                      <td>Cost_E(X<sub>p</sub>)</td>
+                      <td>Cost_U(X<sub>p</sub>)</td>
+                  </tr>
+                  <tr>
+                      <td id="tdXp">-</td>
+                      <td id="tdFxp">-</td>
+                      <td id="tdSigmaXp">-</td>
+                      <td id="tdCostS">-</td>
+                      <td id="tdCostE">-</td>
+                      <td id="tdCostU">-</td>
+                  </tr>
+               </table>
+              </div>
+            <div class="row mt-3 replicasDestrTable">
+              <table>
+                <tbody>
+                  <tr>
+                    <td>f<sup>*</sup><sub>i</sub></td>
+                    <td>R<sup>*</sup><sub>1</sub></td>
+                    <td>R<sup>*</sup><sub>2</sub></td>
+                    <td>R<sup>*</sup><sub>3</sub></td>
+                  </tr>
+                  <tr>
+                    <td><input type="number" oninput="resultPlacementHandler()" id = "fileIndex"></td>
+                    <td id = "tdRepl1Location">-</td>
+                    <td id = "tdRepl2Location">-</td>
+                    <td id = "tdRepl3Location">-</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
       </div>
-      <div clas="row">
-          <button id="calculate" onclick="getOptimalNodes()">Рассчитать</button>
+
+
+      <div class="row" style="margin-top: -10%;">
+        <div class="col-md-4">
+          <div class="editGraphModalWindow" style="display: none;">
+            <div class="row mt-2" id="editEdges">
+              <h5>Ребро</h5>
+              <div class="row mt-1">
+                  <div class="col-md-3">
+                    <label>Id:</label>
+                  </div>
+                  <div class="col-md-6">
+                    <input type="number" id="edgeId" class="editEdgesField" oninput="validateEditEdgeModalWindow()">
+                  </div>
+              </div>
+  
+              <div class="row mt-1">
+                <div class="col-md-3">
+                  <label>Расстояние:</label>
+                </div>
+                <div class="col-md-6">
+                  <input type="number" id="edgeCost" class="editEdgesField" oninput="validateEditEdgeModalWindow()">
+                </div>
+              </div>
+  
+              <div class="row mt-1">
+                <div class="col-md-3">
+                  <label>Откуда:</label>
+                </div>
+                <div class="col-md-6">
+                  <input type="number" id="edgeFrom" class="editEdgesField" oninput="validateEditEdgeModalWindow()">
+                </div>
+              </div>
+  
+              <div class="row mt-1">
+                <div class="col-md-3">
+                  <label>Куда:</label>
+                </div>
+                <div class="col-md-6">
+                  <input type="number" id="edgeTo" class="editEdgesField" oninput="validateEditEdgeModalWindow()">
+                </div>
+              </div>
+  
+              <div class="row mt-1">
+                <div class="col-md-2">
+                  <button onclick="addEdge();" id="addEdgeBtn" disabled>Добавить</button>
+                </div>
+                <div class="col-md-2">
+                  <button onclick= "removeEdge();" id="removeEdgeBtn" disabled>Удалить</button>
+                </div>
+                <div class="col-md-2">
+                  <button onclick= "updateEdge();" id="updateEdgeBtn" disabled>Изменить</button>
+                </div>
+              </div>
+              <h5>Узел</h5>
+              <div class="row mt">
+                <div class="col-md-3">
+                  <label>Id:</label>
+                </div>
+                <div class="col-md-6">
+                  <input type="number" id="nodeId" class="editNodesField" oninput="validateEditNodeModalWindow()">
+                </div>
+                <div class="row mt-1">
+                  <div class="col-md-2">
+                    <button onclick="addNode();" id="addNodeBtn" disabled>Добавить</button>
+                  </div>
+                  <div class="col-md-2">
+                    <button onclick= "removeNode();" id="removeNodeBtn" disabled>Удалить</button>
+                  </div>
+                </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <script src="./scripts/graphHandler.js"></script>

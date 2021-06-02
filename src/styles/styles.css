@@ -88,3 +88,27 @@ input:disabled
   background-color:white;
   color: black;
 }
+.resultTable table
+{
+  border: 2px solid #000;
+}
+.resultTable td,tr
+{
+  border: 2px solid #000;
+}
+
+.replicasDestrTable table
+{
+  border: 2px solid #000;
+}
+.replicasDestrTable td,tr
+{
+  width: 50px;
+  text-align: center;
+  border: 2px solid #000;
+}
+.replicasDestrTable input
+{
+  border: white;
+  text-align: center;
+}

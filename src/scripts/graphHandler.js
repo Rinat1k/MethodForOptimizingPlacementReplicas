@@ -1,4 +1,4 @@
-var network,edges,nodes;
+var network,edges,nodes,resultPlacement;
 
 class Node
 {
@@ -44,6 +44,7 @@ function getRandomArbitrary(min, max)
 //Функция создания графа
 function drawNodes()
 {
+  document.getElementById("nodeParameters").style = "pointer-events: auto;";
   let countNumbers = document.getElementById("countNodes").value;
   var container = document.getElementById("network");
  
@@ -189,11 +190,17 @@ function updateNode()
     //let updateNode = new Node(id,lambdaE,lambdaU,costS,costE,costU);
     try
     {
-       nodes.get()[id-1].lambdaE=lambdaE;
-       nodes.get()[id-1].lambdaU=lambdaU;
-       nodes.get()[id-1].costS=costS;
-       nodes.get()[id-1].costE=costE;
-       nodes.get()[id-1].costU=costU;
+       for (let i=0;i<nodes.length;i++)
+       {
+          if  (nodes.get()[i].id==id)
+          {
+            nodes.get()[i].lambdaE=lambdaE;
+            nodes.get()[i].lambdaU=lambdaU;
+            nodes.get()[i].costS=costS;
+            nodes.get()[i].costE=costE;
+            nodes.get()[i].costU=costU;
+          }  
+       }
     } 
     catch (err)
     {
@@ -278,42 +285,49 @@ function createArray(length)
 //Реализация эвристического метода поиска узлов, на которых оптимально распологать реплики
 function getOptimalNodes()
 {
-  let testedNodes=[];
-  let currentFxp;
-  let currentFxpi;
+  let summ;
   let maxDelta=0;
   let delta;
-  let flag=0;
+  let xp=[];
   let tmpXpi;
   let p = parseInt(document.getElementById("pInput").value); //Количество медиан, то есть нужное количество узлов для реплик
-  let xp=nodes.get().sort(() => Math.random() - Math.random()).slice(0, p); //предполагаемое множество узлов с репликами
-  let x=getX(xp); //множество {X/Xp} 
-  let maxDeltaIndex;
-  
-  for (let i=0;i<x.length;i++)
+  for (let i=0;i<p;i++)
   {
-    maxDelta=0;
-    currentFxp = getFxp(getSigmaXp(x,xp),getCostXp(x,xp));
-    flag=0;
+    xp.push(nodes.get()[i]);
+  } //предполагаемое множество узлов с репликами
+  let x=getX(xp); //множество {X/Xp} 
+  let maxDeltaIndex=undefined;
+  let testedNodes = [];
+
+  for(let i=0;i<x.length;i++)
+  {
+    if (testedNodes.indexOf(x[i].id,0)!=-1) continue;
+    maxDeltaIndex=undefined;
     for (let j=0;j<xp.length;j++)
     {
       tmpXpi=Array.from(xp);
       tmpXpi[j]=x[i];
-      currentFxpi = getFxp(getSigmaXp(x,tmpXpi),getCostXp(x,tmpXpi)); //[object] return
-      delta = currentFxp-currentFxpi;
-      if(delta>0&&delta>maxDelta)
+      delta = getFxp(getSigmaXp(x,xp),getCostXp(x,xp))-getFxp(getSigmaXp(x,tmpXpi),getCostXp(x,tmpXpi));
+      if (delta>maxDelta)
       {
-        maxDelta=delta;
         maxDeltaIndex=j;
-        flag=1;
+        maxDelta=delta;
       }
     }
-    if (flag) 
+    testedNodes.push(x[i].id);
+    if (maxDeltaIndex!=undefined)
     {
       xp[maxDeltaIndex]=x[i];
+      testedNodes.push(xp[maxDeltaIndex].id);
+      x=getX(xp);
+      i=0;
     }
   }
-  return xp;
+  showResult(xp,getFxp(getSigmaXp(x,xp),getCostXp(x,xp)),getCostXp(x,xp),
+             xp.map(node=>summ+=parseInt(node.costS), summ=0).reverse()[0],
+             xp.map(node=>summ+=parseInt(node.costE), summ=0).reverse()[0],
+             xp.map(node=>summ+=parseInt(node.costU), summ=0).reverse()[0]);
+  resultPlacement = placementReplicOnNodes(xp);
 }
 
 //Функция расчёта суммы затрат на обмен информацией между узлами
@@ -383,6 +397,24 @@ function updateVnInNodes()
   }
 }
 
+//Функция установки значений в таблицу результатов
+function showResult(xp,Fxp,sigma,costS,costE,costU)
+{ 
+  let tmpXp = "[";
+  for (let i=0;i<xp.length;i++)
+  {
+    tmpXp+=xp[i].id + " ";
+  }
+  tmpXp+="]";
+  document.getElementById("tdXp").innerText=tmpXp;
+  document.getElementById("tdFxp").innerText=Fxp;
+  document.getElementById("tdSigmaXp").innerText=sigma;
+  document.getElementById("tdCostS").innerText=costS;
+  document.getElementById("tdCostE").innerText=costE;
+  document.getElementById("tdCostU").innerText=costU;
+}
+
+
 //Функция обновления рисунка графа
 function graphRefresh()
 {
@@ -397,3 +429,45 @@ function graphRefresh()
   };
   network = new vis.Network(container, data, options);
 } 
+
+//Функция размещения реплик по узлам
+function placementReplicOnNodes(xp)
+{
+  let fileNumbers = parseInt(document.getElementById("fileNumbersInput").value);
+  let resultPlacement=createMatrix(xp.length,fileNumbers);
+  for (let i=0;i<resultPlacement.length;i++)
+  {
+    for(let j=0;j<resultPlacement[i].length;j++)
+    {
+      resultPlacement[i][j]=xp[getRandomArbitrary(0,xp.length)].id;
+    }
+  }
+  return resultPlacement;
+}
+
+//Функция обработки таблицы вывода распределения файлов
+function resultPlacementHandler()
+{
+  let replicasNumbers=3;
+  if (document.getElementById("fileIndex").value>resultPlacement.length||document.getElementById("fileIndex").value<0)
+  {
+    for (let i =0;i<replicasNumbers;i++)
+    {
+      document.getElementById("tdRepl"+(i+1)+"Location").innerHTML="-";
+    }
+  }
+  for (let i =0;i<replicasNumbers;i++)
+  {
+    document.getElementById("tdRepl"+(i+1)+"Location").innerHTML = resultPlacement[document.getElementById("fileIndex").value-1][i];
+  }
+}
+
+//Функция создания массива A=[MxN]
+function createMatrix(m, n)
+{
+  var result = []
+  for(var i = 0; i < n; i++) {
+      result.push(new Array(m).fill(0))
+  }
+  return result
+}
